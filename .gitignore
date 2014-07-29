@@ -52,3 +52,11 @@ coverage.xml
 # Sphinx documentation
 docs/_build/
 
+# Virtualenv
+venv/
+
+# Sqlite3 Database file
+*.sqlite3
+
+HEROku env file
+.env
