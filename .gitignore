@@ -60,3 +60,6 @@ venv/
 
 HEROku env file
 .env
+
+vim temp file
+*.swp

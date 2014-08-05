@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from suits.models import Customer
+
 from suits.models import Order
 from suits.models import Body
 from suits.models import CustSuit
@@ -8,11 +9,12 @@ from suits.models import CustPant
 from suits.models import CustShirt
 from suits.models import CustVest
 
+from suits.models import Material
+
 from suits.models import Suit
 from suits.models import Pant
 from suits.models import Shirt
 from suits.models import Vest
-from suits.models import Material
 
 class OrderInline(admin.StackedInline):
     model = Order
@@ -21,7 +23,10 @@ class OrderInline(admin.StackedInline):
 
 class BodyInline(admin.StackedInline):
     model = Body
-    radio_fields = {'shoulder_type': admin.HORIZONTAL}
+    radio_fields = {
+        'shoulder_type'            : admin.HORIZONTAL,
+        'fit'                      : admin.HORIZONTAL,
+    }
 
 class CustSuitInline(admin.StackedInline):
     model = CustSuit
@@ -53,6 +58,10 @@ class SuitInline(admin.StackedInline):
         'breast_style'            : admin.HORIZONTAL,
         'breast_button_number'    : admin.HORIZONTAL,
         'front_pocket_number'     : admin.HORIZONTAL,
+        'shoulder_padding'        : admin.HORIZONTAL,
+        'elbow_pad'               : admin.HORIZONTAL,
+        'sleeve_buttonholes'      : admin.HORIZONTAL,
+        'sleeve_button_style'     : admin.HORIZONTAL,
         'vent'                    : admin.HORIZONTAL,
         'outer_pick_stitch'       : admin.HORIZONTAL,
         'monogram_style'          : admin.HORIZONTAL,
@@ -67,6 +76,8 @@ class PantInline(admin.StackedInline):
         'pleats'                  : admin.HORIZONTAL,
         'back_pocket'             : admin.HORIZONTAL,
         'lining_style'            : admin.HORIZONTAL,
+        'length_style'            : admin.HORIZONTAL,
+        'lower_leg_style'         : admin.HORIZONTAL,
     }
 
 class ShirtInline(admin.StackedInline):
@@ -82,10 +93,11 @@ class ShirtInline(admin.StackedInline):
         'cuff_button_number'      : admin.HORIZONTAL,
         'cuff_collour_contrast'   : admin.HORIZONTAL,
         'cuff_style'              : admin.HORIZONTAL,
-        'front_button'            : admin.HORIZONTAL,
-        'front_button_colour'     : admin.HORIZONTAL,
+        'cuff_shape_style'        : admin.HORIZONTAL,
+        'button_style'            : admin.HORIZONTAL,
         'pocket'                  : admin.HORIZONTAL,
         'sleeve_style'            : admin.HORIZONTAL,
+        'shirt_length'            : admin.HORIZONTAL,
     }
 
 class VestInline(admin.StackedInline):
@@ -103,7 +115,7 @@ class VestInline(admin.StackedInline):
 class CustomerAdmin(admin.ModelAdmin):
     inlines = [OrderInline,
                ]
-    list_display  = ['username', 'phone', 'email', 'gender', 'age']
+    list_display  = ['id', 'username', 'phone', 'email', 'gender']
     search_fields = ['username', 'phone', 'email']
     radio_fields  = {'gender'    : admin.HORIZONTAL}
 
@@ -119,7 +131,7 @@ class OrderAdmin(admin.ModelAdmin):
                ShirtInline,
                VestInline,
                ]
-    list_display  = ['__unicode__', 'price', 'create_date', 'last_update']
+    list_display  = ['id', 'customer', 'price', 'create_date', 'last_update']
     search_fields = ['customer__username', 'customer__phone', 'customer__email']
     radio_fields  = {'status'    : admin.HORIZONTAL}
     raw_id_fields = ['customer']
@@ -133,7 +145,3 @@ admin.site.register(Customer, CustomerAdmin)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Material, MaterialAdmin)
 
-admin.site.register(Suit)
-admin.site.register(Pant)
-admin.site.register(Shirt)
-admin.site.register(Vest)
